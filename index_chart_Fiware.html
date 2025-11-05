@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoramento de Temperatura e Umidade</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f0f8ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    .medicao {
+      font-size: 1.5em;
+      margin: 10px 0;
+      padding: 10px 25px;
+      border-radius: 10px;
+      background: linear-gradient(to right, #6dd5fa, #2980b9);
+      color: white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    .chart-container {
+      width: 95%;
+      max-width: 900px;
+      margin-top: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>Baila - Passa a Bola</h1>
+
+  <div class="medicao"> Batimentos: <span id="potenciometro">--</span></div>
+  
+  <div class="chart-container">
+    <canvas id="chartPot"></canvas>
+  </div>
+
+  
+  <script>
+    // Configuração do gráfico
+    const ctxPot = document.getElementById('chartPot').getContext('2d');
+    
+    const chartPot = new Chart(ctxPot, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Potênciometro',
+          data: [],
+          borderColor: 'rgb(255, 99, 132)',
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          fill: true,
+          tension: 0.2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+        scales: {
+          x: { title: { display: true, text: 'Tempo (mm:ss)' } },
+          y: { beginAtZero: false }
+        }
+      }
+    });
+
+    const MAX_PONTOS = 720; // 1 hora com atualização a cada 5s
+    let tempoSegundos = 0;
+
+    function formatarTempo(segundos) {
+      const minutos = Math.floor(segundos / 60);
+      const seg = segundos % 60;
+      return `${minutos.toString().padStart(2, '0')}:${seg.toString().padStart(2, '0')}`;
+    }
+
+    function atualizarDados() {
+      fetch("http://54.172.140.81:1026/v2/entities/urn:ngsi-ld:device:014/attrs/b", {
+        method: "GET",
+        headers: {
+          "Fiware-Service": "smart",
+          "Fiware-ServicePath": "/",
+          "Accept": "application/json"
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          // pega o valor do atributo p
+          const valor = data.value;
+          document.getElementById('potenciometro').textContent = valor;
+
+          tempoSegundos += 5;
+          const tempoLabel = formatarTempo(tempoSegundos);
+
+          chartPot.data.labels.push(tempoLabel);
+          chartPot.data.datasets[0].data.push(valor);
+
+          if (chartPot.data.labels.length > MAX_PONTOS) {
+            chartPot.data.labels.shift();
+            chartPot.data.datasets[0].data.shift();
+          }
+
+          chartPot.update();
+        })
+        .catch(e => console.log("Falha ao buscar dados:", e));
+    }
+
+    // Atualiza ao carregar
+    atualizarDados();
+    // Atualiza a cada 5 segundos
+    setInterval(atualizarDados, 5000);
+  </script>
+</body>
+</html>
