@@ -49,8 +49,7 @@ O circuito é composto pelos seguintes componentes:
 
 ### 📊 Dashboard de Monitoramento
 
-<img width="1215" height="746" alt="image" src="https://github.com/user-attachments/assets/421b2c20-e104-450e-b541-c7ffb0ac8f1e" />
-
+<img width="1097" height="746" alt="image" src="https://github.com/user-attachments/assets/b734388c-ab9b-440b-b775-83343a4cfa89" />
 
 ---
 
