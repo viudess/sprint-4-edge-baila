@@ -132,13 +132,4 @@ Esses valores representam a variação simulada dos **batimentos cardíacos**, q
 
 ---
 
-## 👩‍💻 Equipe e Créditos
-
-**Projeto:** Baila — Apoio às jovens jogadoras de futebol  
-**Desenvolvido por:** Viudes e equipe FIAP  
-**Orientação:** Professores do curso de Engenharia de Software — FIAP  
-**Ano:** 2025
-
----
-
 📍 *"Cuidar do corpo é jogar com o coração."* 💙⚽
