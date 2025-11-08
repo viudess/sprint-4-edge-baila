@@ -5,6 +5,15 @@ O sistema apresentado aqui consiste em um **medidor de batimentos cardíacos** c
 
 ---
 
+## 👥 Participantes do Grupo
+
+- **Kazys Tatarunas** – RM: 564020  
+- **Eduardo Viudes** – RM: 564075  
+- **Frederico de Paula** – RM: 562109 
+- **Victor Tadashi** – RM: 563582  
+
+---
+
 ## 🧠 Contexto do Projeto
 
 O **Baila** busca promover o **autoconhecimento corporal e a saúde emocional** das jogadoras, permitindo que elas e seus treinadores acompanhem parâmetros importantes como:
